@@ -1,0 +1,12 @@
+datasets
+transformers
+sentencepiece
+torch
+accelerate
+faiss-cpu
+rank_bm25
+duckduckgo-search
+huggingface-hub
+tqdm
+nltk
+numpy
