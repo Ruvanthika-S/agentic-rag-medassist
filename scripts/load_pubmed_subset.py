@@ -23,7 +23,8 @@ from datasets import load_dataset
 
 def normalize_example(example: dict) -> dict:
     # Try common field names used in various PubMed exports
-    pmid = example.get("pmid") or example.get("paper_id") or example.get("id") or example.get("pmcid")
+    pmid = example.get("PMID") or example.get("pmid") or example.get("paper_id") or example.get("pmcid")
+    snippet_id = example.get("id") or pmid
     title = example.get("title") or example.get("paper_title") or ""
     abstract = (
         example.get("abstract")
@@ -36,9 +37,12 @@ def normalize_example(example: dict) -> dict:
     )
     journal = example.get("journal") or ""
     year = example.get("year") or example.get("pub_year") or example.get("publication_year") or ""
-    url = example.get("url") or example.get("source_url") or ""
+    url = example.get("url") or example.get("source_url") or (
+        f"https://pubmed.ncbi.nlm.nih.gov/{pmid}/" if pmid else ""
+    )
     return {
-        "id": pmid,
+        "id": snippet_id,
+        "pmid": pmid,
         "title": title,
         "abstract": abstract,
         "journal": journal,
@@ -170,7 +174,15 @@ def main():
         # Candidate passed all filters
         candidates += 1
 
-        row = {"title": title, "abstract": abstract, "id": ex.get("id"), "journal": ex.get("journal"), "year": ex.get("year"), "url": ex.get("url")}
+        row = {
+            "title": title,
+            "abstract": abstract,
+            "id": ex.get("id"),
+            "pmid": ex.get("pmid"),
+            "journal": ex.get("journal"),
+            "year": ex.get("year"),
+            "url": ex.get("url"),
+        }
 
         # Reservoir sampling logic (use candidate count)
         if len(reservoir) < args.max_snippets:
