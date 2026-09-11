@@ -5,7 +5,8 @@ torch
 accelerate
 faiss-cpu
 rank_bm25
-duckduckgo-search
+ddgs
+groq
 huggingface-hub
 tqdm
 nltk
