@@ -1,3 +1,8 @@
 data/
 .venv/
 __pycache__/
+.env
+.env.*
+!.env.example
+med_assist_ui/node_modules/
+med_assist_ui/.next/

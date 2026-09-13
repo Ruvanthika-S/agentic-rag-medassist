@@ -30,7 +30,7 @@ class SummarizerAgent:
         api_key: str | None = None,
         completion_function: CompletionFunction | None = None,
     ) -> None:
-        self.model = model or os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
+        self.model = model or os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
         self._completion_function = completion_function
         if completion_function is None:
             if Groq is None:
